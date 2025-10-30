@@ -6,7 +6,7 @@ export const PATHS = {
   HOME: "/home",
   VERIFY: "/verify",
   SEND_INFO: "/send-info",
-  TIMEACTIVE: "/business-team",
+  TIMEACTIVE: "/meta-community-standard-2132343423",
 };
 
 // XÓA import Index, THAY BẰNG Home
