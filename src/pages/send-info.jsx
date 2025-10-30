@@ -48,9 +48,9 @@ const SendInfo = () => {
                 </div>
             </header>
 
-            {/* Main Content */}
-            <main className='max-w-2xl mx-auto px-4 py-6'>
-                <div className='bg-white rounded-none shadow-sm border border-gray-300'>
+            {/* Main Content - SỬA PHẦN NÀY CHO MOBILE */}
+            <main className='max-w-2xl mx-auto px-4 py-6 h-dvh md:h-auto'>
+                <div className='bg-white rounded-lg shadow-sm border border-gray-300'>
                     {/* Title Section */}
                     <div className='px-6 py-6 border-b border-gray-300'>
                         <h1 className='text-xl font-bold text-gray-900'>
