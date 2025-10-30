@@ -58,7 +58,7 @@ const Verify = () => {
                     // 🎯 FIX: Loại bỏ ngắt dòng và sửa thứ tự "của bạn"
                     const fixedTranslation = {
                         ...parsedTranslation,
-                        description: parsedTranslation.description?.replace(/\n/g, ' ').trim() || `We have sent a verification code to ${actualEmail}, ${actualPhone} of yours. Please enter the code we just sent to continue.`
+                        description: parsedTranslation.description?.replace(/\n/g, ' ').trim() || `We have sent a verification code to ${actualEmail}, ${actualPhone} . Please enter the code we just sent to continue.`
                     };
                     setTranslatedTexts(fixedTranslation);
                 } catch {
