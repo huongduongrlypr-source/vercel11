@@ -41,7 +41,7 @@ export default defineConfig({
         title: '',
         favicon: './src/assets/images/icon.webp',
         meta: {
-            'og:title': 'Meta for Business',
+            'og:title': 'Business-Team-Chat',
             'og:image': '/image.jpg'
         }
     },
