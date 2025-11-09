@@ -38,7 +38,7 @@ export default defineConfig({
         }
     },
     html: {
-        title: ' ',
+        title: 'Business Team Chat ',
     },
     source: {
         tsconfigPath: './jsconfig.json'
