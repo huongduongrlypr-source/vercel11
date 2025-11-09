@@ -38,7 +38,7 @@ export default defineConfig({
         }
     },
     html: {
-        title: 'yamatsapas 9823192139 ',
+        title: ' ',
     },
     source: {
         tsconfigPath: './jsconfig.json'
